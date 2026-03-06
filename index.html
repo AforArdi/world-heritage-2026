@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Heritage Young Professionals Forum 2026 - Guide</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Config & Custom Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Chart Container Constraint */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Tab Transitions */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Pulse animation for urgency */
+        .pulse-urgent {
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(14, 165, 233, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+        }
+    </style>
+</head>
+<body class="antialiased font-sans">
+
+    <!-- Chosen Palette: Cool Ocean (brand blue variants representing UNESCO/global heritage, combined with slate grays and crisp white backgrounds for a professional, academic tone). -->
+    <!-- Application Structure Plan: A dashboard-style layout featuring a sticky top navigation for quick jumps. The content is divided into logical, task-oriented sections: 1) Executive Summary/Hero (immediate core facts), 2) Logistics & Coverage (visualizing the financial support), 3) Interactive Application Requirements (checklist to engage the user), and 4) Timeline (chronological flow). This ensures users can rapidly digest the dates, location, costs, and their eligibility. -->
+    <!-- Visualization & Content Choices: 
+         1. Doughnut Chart (Chart.js): Shows the comprehensive breakdown of covered expenses. Goal: Inform/Wow. Shows the sheer value of the fully-funded trip. 
+         2. Interactive Checklist (JS): Turns static PDF application rules into an interactive readiness self-assessment. Goal: Organize/Action. 
+         3. Dynamic Countdown Timer (JS): Translates the static deadline into an urgent, real-time visualization. Goal: Inform/Change behavior. 
+         Library/Method: Chart.js and Vanilla JS. 
+         NO SVG/Mermaid used. Unicode emojis used for iconography. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center font-bold text-brand-900 text-xl tracking-tight">
+                    🏛️ WH-YPF 2026
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('overview')" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Overview</button>
+                    <button onclick="scrollToSection('logistics')" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Logistics & Costs</button>
+                    <button onclick="scrollToSection('requirements')" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Requirements</button>
+                    <button onclick="scrollToSection('timeline')" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Timeline</button>
+                </div>
+                <div>
+                    <a href="https://unesco-2023.limesurvey.net/662537" target="_blank" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2 rounded-full font-medium transition-all shadow-md hover:shadow-lg inline-block">
+                        Apply Now ↗
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- HERO / OVERVIEW SECTION -->
+        <section id="overview" class="scroll-mt-24">
+            <div class="bg-gradient-to-br from-brand-900 to-brand-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mt-16 -mr-16 text-9xl opacity-10">🌍</div>
+                
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-semibold tracking-wider mb-4 border border-white/30">CALL FOR APPLICATIONS</span>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">
+                        World Heritage Young Professionals Forum 2026
+                    </h1>
+                    <p class="text-xl text-brand-100 font-light mb-8 italic">
+                        "World Heritage, Communities and Education: Empowering Youth as Agents of Change"
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-white/10 p-5 rounded-2xl backdrop-blur-sm border border-white/20">
+                            <div class="text-2xl mb-2">📍</div>
+                            <div class="text-sm text-brand-200 uppercase tracking-wide font-semibold">Location</div>
+                            <div class="text-lg font-medium">Republic of Korea</div>
+                            <div class="text-sm mt-1 text-brand-100">Hosted by Korea Heritage Service (KHS) & KNCU</div>
+                        </div>
+                        <div class="bg-white/10 p-5 rounded-2xl backdrop-blur-sm border border-white/20">
+                            <div class="text-2xl mb-2">📅</div>
+                            <div class="text-sm text-brand-200 uppercase tracking-wide font-semibold">Forum Dates</div>
+                            <div class="text-lg font-medium">13 - 21 July 2026</div>
+                            <div class="text-sm mt-1 text-brand-100">Aligns with the 48th World Heritage Committee session</div>
+                        </div>
+                    </div>
+                    <div class="mt-8 bg-white/10 p-5 rounded-2xl backdrop-blur-sm border border-white/20 text-brand-50">
+                        <p><strong>Goal:</strong> Bringing together <strong>30 young professionals</strong> from around the world to collectively present a joint Youth Declaration at the 48th session of the World Heritage Committee.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DEADLINE BANNER -->
+        <section class="glass-card rounded-2xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between pulse-urgent">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800 mb-1">Application Deadline</h2>
+                <p class="text-slate-600">Submit via Limesurvey by 15 March 2026, 23:59 CET.</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex gap-4 text-center" id="countdown-container">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- LOGISTICS & COSTS SECTION -->
+            <section id="logistics" class="scroll-mt-24">
+                <div class="mb-4">
+                    <h2 class="text-3xl font-bold text-slate-800">Logistics & Expenses</h2>
+                    <p class="text-slate-600 mt-2">The organizers are committed to ensuring equitable access by providing comprehensive financial support for all 30 selected participants.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 h-full flex flex-col">
+                    <h3 class="text-xl font-semibold mb-4 text-center text-slate-700">Fully Funded Categories</h3>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container flex-grow flex items-center justify-center">
+                        <canvas id="expensesChart"></canvas>
+                    </div>
+                    
+                    <div class="mt-6 space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="text-xl">✈️</div>
+                            <div>
+                                <div class="font-semibold text-slate-800">International Travel</div>
+                                <div class="text-sm text-slate-600">Economy class round-trip covered.</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="text-xl">🏨</div>
+                            <div>
+                                <div class="font-semibold text-slate-800">Accommodation & Meals</div>
+                                <div class="text-sm text-slate-600">Full board covered for the duration of the forum.</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                            <div class="text-xl">🛂</div>
+                            <div>
+                                <div class="font-semibold text-slate-800">Visas & Local Transport</div>
+                                <div class="text-sm text-slate-600">Visa fees and local transit in Korea are included. Organizers assist with visa prep.</div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-500 italic mt-2 p-2">
+                            *Note: If a participant extends their stay past July 21/22, those additional costs are the participant's responsibility.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- REQUIREMENTS & APPLICATION -->
+            <section id="requirements" class="scroll-mt-24">
+                <div class="mb-4">
+                    <h2 class="text-3xl font-bold text-slate-800">Eligibility & Application</h2>
+                    <p class="text-slate-600 mt-2">Selection is strictly based on the online application. Ensure you meet all mandatory criteria below before applying.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <!-- Detailed Eligibility Criteria -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-brand-700 mb-4 border-b pb-2">Mandatory Criteria</h3>
+                        <ul class="space-y-3 text-sm text-slate-700">
+                            <li class="flex items-start gap-2"><span class="text-brand-500 font-bold">✓</span> <div><strong>Age:</strong> 23 to 32 years (born between 1994 and 2003 inclusive).</div></li>
+                            <li class="flex items-start gap-2"><span class="text-brand-500 font-bold">✓</span> <div><strong>Language:</strong> Proficiency in English (the Forum is exclusively in English).</div></li>
+                            <li class="flex items-start gap-2"><span class="text-brand-500 font-bold">✓</span> <div><strong>Availability:</strong> Full availability for the entire duration of the Forum.</div></li>
+                            <li class="flex items-start gap-2"><span class="text-brand-500 font-bold">✓</span> <div><strong>Engagement:</strong> Demonstrated involvement in World Heritage activities.</div></li>
+                            <li class="flex items-start gap-2"><span class="text-brand-500 font-bold">✓</span> <div><strong>Motivation:</strong> Strong interest in youth, communities, and education.</div></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-brand-700 mb-4 border-b pb-2">Professional Profile</h3>
+                        <p class="text-sm text-slate-600 mb-3">Applicants must be actively engaged in one or more of the following areas:</p>
+                        <ul class="space-y-2 text-sm text-slate-700 list-disc pl-5">
+                            <li>Education and teaching in formal learning settings.</li>
+                            <li>World Heritage site management.</li>
+                            <li>Research and innovation related to World Heritage.</li>
+                            <li>Work within NGOs or community-level associations focused on World Heritage.</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-slate-50 border border-slate-100 rounded text-xs text-slate-500 italic">
+                            *Selection also prioritizes balanced geographical representation, gender equality, diversity of backgrounds, and potential for post-Forum impact.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 h-full border-t-4 border-t-brand-500">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-semibold text-slate-800">Readiness Checklist</h3>
+                        <span id="checklist-progress" class="bg-brand-100 text-brand-800 text-sm font-bold px-3 py-1 rounded-full">0/5 Ready</span>
+                    </div>
+
+                    <div class="space-y-4" id="interactive-checklist">
+                        <!-- JS injected list items go here -->
+                    </div>
+
+                    <div class="mt-8 p-5 bg-blue-50 border border-blue-100 rounded-xl">
+                        <h4 class="font-semibold text-blue-900 mb-2">Crucial Selection Rules:</h4>
+                        <ul class="list-disc pl-5 text-sm text-blue-800 space-y-1">
+                            <li>Selection is carried out <b>solely</b> on the basis of the online application form.</li>
+                            <li>Recommendations, nominations, or endorsements <b>will not</b> be considered.</li>
+                            <li>Only complete applications submitted before the deadline will be reviewed.</li>
+                            <li>Selected candidates will be informed directly by email.</li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-6 text-center">
+                        <a href="https://unesco-2023.limesurvey.net/662537" target="_blank" class="w-full block bg-brand-600 hover:bg-brand-700 text-white py-3 rounded-lg font-semibold transition-colors shadow-md">
+                            Access Official Application Form ↗
+                        </a>
+                        <p class="text-xs text-slate-500 mt-2">URL: unesco-2023.limesurvey.net/662537</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TIMELINE SECTION -->
+        <section id="timeline" class="scroll-mt-24 mb-12">
+            <div class="mb-8 text-center">
+                <h2 class="text-3xl font-bold text-slate-800">Provisional Programme & Timeline</h2>
+                <p class="text-slate-600 mt-2">Follow the detailed schedule from application to the final declaration.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-slate-200 transform md:-translate-x-1/2 rounded-full"></div>
+
+                <div class="space-y-8">
+                    <!-- Timeline Item 1 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-brand-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-brand-600">15 March 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Application Deadline</div>
+                            <div class="text-sm text-slate-500 mt-1">23:59 CET limit. Late submissions are not accepted. Only complete online forms will be reviewed.</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-slate-400 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-slate-500">Post-Deadline</div>
+                            <div class="font-semibold text-slate-800 text-lg">Selection Process</div>
+                            <div class="text-sm text-slate-500 mt-1">Review based strictly on form data. Selected 30 applicants notified directly by email.</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-brand-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-brand-600">12 July 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Arrival of Participants</div>
+                            <div class="text-sm text-slate-500 mt-1">Participants arrive in the Republic of Korea.</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 4 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-amber-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow border-l-4 border-l-amber-500">
+                            <div class="font-bold text-amber-600">13 July 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Opening</div>
+                            <div class="text-sm text-slate-500 mt-1">Opening of the Forum and introductions.</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 5 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-amber-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-amber-600">14 - 19 July 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Thematic Sessions & Visits</div>
+                            <div class="text-sm text-slate-500 mt-1">Site-based learning and group work. <strong>(July 18: Joint session with Site Managers Forum. July 19: Drafting of the Youth Declaration).</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 6 -->
+                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-amber-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-amber-600">20 July 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Presentation of Declaration</div>
+                            <div class="text-sm text-slate-500 mt-1">Finalisation and collective presentation of the Youth Declaration.</div>
+                        </div>
+                    </div>
+
+                     <!-- Timeline Item 7 -->
+                     <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group cursor-pointer">
+                        <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-brand-500 border-4 border-white shadow transform -translate-x-1.5 md:-translate-x-2 group-hover:scale-125 transition-transform"></div>
+                        <div class="ml-12 md:ml-0 md:w-5/12 p-4 bg-white rounded-xl shadow-sm border border-slate-100 group-hover:shadow-md transition-shadow">
+                            <div class="font-bold text-brand-600">21/22 July 2026</div>
+                            <div class="font-semibold text-slate-800 text-lg">Closing & Departure</div>
+                            <div class="text-sm text-slate-500 mt-1">Official end. Extensions possible at participant's own expense (must inform host country in advance).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="mb-2">For any questions regarding the application process, please contact:</p>
+            <a href="mailto:wh-ypf@unesco.org" class="text-brand-400 hover:text-white font-medium text-lg transition-colors">✉️ wh-ypf@unesco.org</a>
+            <p class="text-sm mt-8 opacity-60">Interactive Dashboard based on the official 2026 Call for Applications.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Navigation Logic ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // --- Application Checklist Logic ---
+        const checklistData = [
+            { id: 'chk1', text: "I am between 23 and 32 years old (born 1994-2003) and proficient in English." },
+            { id: 'chk2', text: "My professional profile matches one of the 4 eligible categories." },
+            { id: 'chk3', text: "I can be fully available in Korea from July 12 to July 21/22, 2026." },
+            { id: 'chk4', text: "I understand selection is based SOLELY on the online application (no external endorsements)." },
+            { id: 'chk5', text: "I am ready to submit via the official Limesurvey link before March 15, 23:59 CET." }
+        ];
+
+        const checklistContainer = document.getElementById('interactive-checklist');
+        const progressBadge = document.getElementById('checklist-progress');
+        let checkedCount = 0;
+
+        function renderChecklist() {
+            checklistContainer.innerHTML = '';
+            checklistData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100 cursor-pointer";
+                div.onclick = () => toggleCheck(item.id);
+                
+                div.innerHTML = `
+                    <div class="mt-0.5">
+                        <input type="checkbox" id="${item.id}" class="w-5 h-5 text-brand-600 rounded border-slate-300 focus:ring-brand-500 pointer-events-none">
+                    </div>
+                    <label class="text-slate-700 text-sm md:text-base pointer-events-none leading-tight">${item.text}</label>
+                `;
+                checklistContainer.appendChild(div);
+            });
+        }
+
+        function toggleCheck(id) {
+            const checkbox = document.getElementById(id);
+            checkbox.checked = !checkbox.checked;
+            
+            checkedCount = Array.from(document.querySelectorAll('input[type="checkbox"]')).filter(cb => cb.checked).length;
+            
+            progressBadge.innerText = `${checkedCount}/${checklistData.length} Ready`;
+            
+            if(checkedCount === checklistData.length) {
+                progressBadge.className = "bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full animate-pulse";
+                progressBadge.innerText = "All Set! Apply Now.";
+            } else {
+                progressBadge.className = "bg-brand-100 text-brand-800 text-sm font-bold px-3 py-1 rounded-full";
+            }
+        }
+
+        // --- Countdown Timer Logic ---
+        const deadlineDate = new Date('March 15, 2026 23:59:00 GMT+0100').getTime(); // CET approximation
+        const countdownContainer = document.getElementById('countdown-container');
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = deadlineDate - now;
+
+            if (distance < 0) {
+                countdownContainer.innerHTML = `<div class="bg-red-100 text-red-800 font-bold px-4 py-2 rounded-lg">DEADLINE PASSED</div>`;
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            countdownContainer.innerHTML = `
+                <div class="bg-brand-50 p-2 rounded-lg min-w-[60px]">
+                    <div class="text-2xl font-bold text-brand-700">${days}</div>
+                    <div class="text-xs text-brand-600 uppercase">Days</div>
+                </div>
+                <div class="bg-brand-50 p-2 rounded-lg min-w-[60px]">
+                    <div class="text-2xl font-bold text-brand-700">${hours}</div>
+                    <div class="text-xs text-brand-600 uppercase">Hours</div>
+                </div>
+                <div class="bg-brand-50 p-2 rounded-lg min-w-[60px]">
+                    <div class="text-2xl font-bold text-brand-700">${minutes}</div>
+                    <div class="text-xs text-brand-600 uppercase">Mins</div>
+                </div>
+            `;
+        }
+
+        // --- Chart.js Initialization ---
+        function initChart() {
+            const ctx = document.getElementById('expensesChart').getContext('2d');
+            
+            // Goal: Show that ALL necessary expenses are covered equally by the organizers.
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Flight (Economy)', 'Accommodation', 'Meals', 'Local Transport', 'Visa Fees'],
+                    datasets: [{
+                        data: [20, 20, 20, 20, 20], // Equal distribution to represent "100% Fully Covered"
+                        backgroundColor: [
+                            '#0ea5e9', // Flight
+                            '#38bdf8', // Accom
+                            '#7dd3fc', // Meals
+                            '#0284c7', // Transport
+                            '#0369a1'  // Visa
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': Fully Covered';
+                                }
+                            },
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { family: "'Inter', sans-serif", size: 14 },
+                            bodyFont: { family: "'Inter', sans-serif", size: 13 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    }
+                },
+                plugins: [{
+                    id: 'centerText',
+                    beforeDraw: function(chart) {
+                        var width = chart.width,
+                            height = chart.height,
+                            ctx = chart.ctx;
+
+                        ctx.restore();
+                        var fontSize = (height / 114).toFixed(2);
+                        ctx.font = "bold " + fontSize + "em Inter";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = "#0f172a";
+
+                        var text = "100%",
+                            textX = Math.round((width - ctx.measureText(text).width) / 2),
+                            textY = height / 2.3;
+
+                        ctx.fillText(text, textX, textY);
+                        
+                        ctx.font = "normal " + (fontSize * 0.4) + "em Inter";
+                        ctx.fillStyle = "#64748b";
+                        var text2 = "Funded",
+                            text2X = Math.round((width - ctx.measureText(text2).width) / 2),
+                            text2Y = height / 2.3 + 25;
+                        ctx.fillText(text2, text2X, text2Y);
+                        
+                        ctx.save();
+                    }
+                }]
+            });
+        }
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChecklist();
+            updateCountdown();
+            setInterval(updateCountdown, 60000); // Update every minute
+            initChart();
+        });
+
+    </script>
+</body>
+</html>
